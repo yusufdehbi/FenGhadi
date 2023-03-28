@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+const String apiKey = 'AIzaSyDa5PUgpGklfrXSW8UHBpMp_G-1DIvNB7Y';
+
 var primaryColor = const Color(0xFFF9A826);
 var secondaryColor = const Color(0xFF3F3D56);
 var fgBlue = const Color(0xFF3DBDD8);
 var fgOrange = const Color(0xFFF47216);
 var fgRed = const Color(0xFFE43828);
 var fgYellow = const Color(0xFFFFD600);
+var fgLightOrange = const Color(0xFFFFEED3);
 
 var materialPrimaryColor = MaterialColor(primaryColor.value, primarySwatch);
 var materialSecondaryColor =

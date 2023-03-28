@@ -3,6 +3,7 @@ import 'package:fen_ghadi/pages/preferences_page.dart';
 import 'package:fen_ghadi/pages/profile_page.dart';
 import 'package:fen_ghadi/utils/style.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'utils/fen_ghadi_icons_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 
