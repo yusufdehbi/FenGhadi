@@ -3,7 +3,6 @@ import 'package:fen_ghadi/pages/preferences_page.dart';
 import 'package:fen_ghadi/pages/profile_page.dart';
 import 'package:fen_ghadi/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'utils/fen_ghadi_icons_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,13 +25,6 @@ class _MyAppState extends State<MyApp> {
 
   // Current Page Index
   int pageIndex = 2;
-
-  //Menu Pages
-  // final List<Widget> pages = const [
-  //   ProfilePage(),
-  //   HomePage(),
-  //   PreferencesPage(),
-  // ];
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,3 @@
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkUtility {
@@ -11,7 +9,7 @@ class NetworkUtility {
         return response.body;
       }
     } catch (e) {
-      debugPrint(e.toString());
+      print(e.toString());
     }
     return null;
   }

@@ -29,7 +29,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
       child: Column(children: [
         SwitchListTile(
           secondary: Container(
-            padding: EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(15.0),
             decoration: BoxDecoration(
               color: fgLightOrange,
               borderRadius: BorderRadius.circular(100),
@@ -56,7 +56,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
         ),
         SwitchListTile(
           secondary: Container(
-            padding: EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(15.0),
             decoration: BoxDecoration(
               color: fgLightOrange,
               borderRadius: BorderRadius.circular(100),

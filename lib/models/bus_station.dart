@@ -4,7 +4,10 @@ import 'package:latlong2/latlong.dart';
 class BusStation {
   final String name;
   final LatLng location;
-  final List<Bus> buss;
+  final List<Bus> busList = [];
 
-  BusStation(this.name, this.location, this.buss);
+  BusStation(
+    this.name,
+    this.location,
+  );
 }

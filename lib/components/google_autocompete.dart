@@ -4,7 +4,6 @@ import 'package:fen_ghadi/models/autocomplate_prediction.dart';
 import 'package:fen_ghadi/models/place_autotcomplete_response.dart';
 import 'package:fen_ghadi/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class GoogleAutocomplete extends StatefulWidget {
   final Function(String str) getPlaceId;
@@ -71,11 +70,6 @@ class _GoogleAutocompleteState extends State<GoogleAutocomplete> {
                     (e) => LocationListTile(
                       location: e.description!,
                       press: () {
-                        print("place id : ${e.description}");
-                        print("place id : ${e.placeId.toString()}");
-                        print("reference : ${e.reference.toString()}");
-                        print("latittude : ${e.latitude.toString()}");
-                        print("latittude : ${e.longitude.toString()}");
                         widget.getPlaceId(e.placeId!);
                         e.fetchPlaceDetails(e.placeId);
                         setState(() {

@@ -1,12 +1,7 @@
 import 'package:fen_ghadi/components/item_list_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../models/transport_data.dart';
-import '../utils/fen_ghadi_icons_icons.dart';
 import '../utils/style.dart';
 
 class TransportDataSheet extends StatelessWidget {
