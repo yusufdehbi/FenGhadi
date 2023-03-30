@@ -8,11 +8,14 @@ class ItemListSheet extends StatelessWidget {
   final String name;
   final Duration duration;
   final double price;
-  const ItemListSheet(
-      {super.key,
-      required this.name,
-      required this.price,
-      required this.duration});
+  final Function pressed;
+  const ItemListSheet({
+    super.key,
+    required this.name,
+    required this.price,
+    required this.duration,
+    required this.pressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class ItemListSheet extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            Fluttertoast.showToast(msg: "you Clicked on me");
+            pressed();
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

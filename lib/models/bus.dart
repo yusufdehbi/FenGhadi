@@ -1,10 +1,11 @@
+import 'package:fen_ghadi/models/bus_station.dart';
 import 'package:fen_ghadi/models/bus_transportation.dart';
 
 class Bus {
   String name;
   double price = 5.0;
   Duration duration;
-  List<BusTransportation> busTransportations = [];
+  List<BusStation> stations = [];
 
   /// Start Position ///
   /// Finish Position ///

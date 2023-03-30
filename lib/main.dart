@@ -34,62 +34,64 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: materialPrimaryColor,
         fontFamily: GoogleFonts.ubuntu().fontFamily,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Fen Ghadi"),
-        ),
-        body: pageIndex == 0
-            ? const ProfilePage()
-            : pageIndex == 1
-                ? HomePage(
-                    isBusChecked: isBusChecked,
-                    isTaxiChecked: isTaxiChecked,
-                    isTramChecked: isTramChecked,
-                  )
-                : PreferencesPage(
-                    isBusChecked: isBusChecked,
-                    isTaxiChecked: isTaxiChecked,
-                    isTramChecked: isTramChecked,
-                    onPreferenceChanged: (bool bus, bool taxi, bool tram) {
-                      setState(() {
-                        isBusChecked = bus;
-                        isTaxiChecked = taxi;
-                        isTramChecked = tram;
-                      });
-                    },
-                  ),
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: (index) {
-            setState(() {
-              pageIndex = index;
-            });
-          },
-          currentIndex: pageIndex,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: EdgeInsets.only(bottom: 6.0, top: 3.0),
-                child: Icon(FenGhadiIcons.person),
-              ),
-              label: 'Profile',
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: EdgeInsets.only(bottom: 6.0, top: 3.0),
-                child: Icon(FenGhadiIcons.map),
-              ),
-              label: 'Map',
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: EdgeInsets.only(bottom: 6.0, top: 3.0),
-                child: Icon(
-                  FenGhadiIcons.preferences,
+      home: SafeArea(
+        child: Scaffold(
+          // appBar: AppBar(
+          //   title: const Text("Fen Ghadi"),
+          // ),
+          body: pageIndex == 0
+              ? const ProfilePage()
+              : pageIndex == 1
+                  ? HomePage(
+                      isBusChecked: isBusChecked,
+                      isTaxiChecked: isTaxiChecked,
+                      isTramChecked: isTramChecked,
+                    )
+                  : PreferencesPage(
+                      isBusChecked: isBusChecked,
+                      isTaxiChecked: isTaxiChecked,
+                      isTramChecked: isTramChecked,
+                      onPreferenceChanged: (bool bus, bool taxi, bool tram) {
+                        setState(() {
+                          isBusChecked = bus;
+                          isTaxiChecked = taxi;
+                          isTramChecked = tram;
+                        });
+                      },
+                    ),
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: (index) {
+              setState(() {
+                pageIndex = index;
+              });
+            },
+            currentIndex: pageIndex,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 6.0, top: 3.0),
+                  child: Icon(FenGhadiIcons.person),
                 ),
+                label: 'Profile',
               ),
-              label: 'Preferences',
-            ),
-          ],
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 6.0, top: 3.0),
+                  child: Icon(FenGhadiIcons.map),
+                ),
+                label: 'Map',
+              ),
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 6.0, top: 3.0),
+                  child: Icon(
+                    FenGhadiIcons.preferences,
+                  ),
+                ),
+                label: 'Preferences',
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fen_ghadi/components/google_autocompete.dart';
 import 'package:fen_ghadi/components/transport_data_sheet.dart';
+import 'package:fen_ghadi/models/bus.dart';
 import 'package:fen_ghadi/models/bus_station.dart';
 import 'package:fen_ghadi/models/bus_transportation.dart';
 import 'package:fen_ghadi/models/static_data.dart';
@@ -33,7 +34,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //! Start: Get Location Permission
+  //! Start: Get Location Permission : OutBuild
   Location location = Location();
   bool _serviceEnabled = false;
   PermissionStatus _permissionGranted = PermissionStatus.denied;
@@ -43,6 +44,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _checkLocationPermission();
+    generateMapMarkers();
   }
 
   void _checkLocationPermission() async {
@@ -77,8 +79,9 @@ class _HomePageState extends State<HomePage> {
       print('Could not get the user\'s location: $e');
     }
   }
-  //! End : getting permission
+  //! End : getting permission : OutBuild
 
+  //! Start: Map Markers and Routing : OutBuild
   List<Marker> markers = [];
   Marker? userLocation;
   Marker? userDestination;
@@ -88,7 +91,9 @@ class _HomePageState extends State<HomePage> {
   LatLng _start = LatLng(0, 0);
   LatLng _end = LatLng(0, 0);
   LatLng _destination = LatLng(0, 0);
+  //! End: Map Markers and Routing : OutBuild
 
+  //! Start: Getting the coordinate of destination : OutBuild
   Future<void> getLocationFromPlaceId(String placeId, String apiKey) async {
     String url =
         "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$apiKey";
@@ -100,23 +105,10 @@ class _HomePageState extends State<HomePage> {
       "lat": jsonData["result"]["geometry"]["location"]["lat"],
       "lng": jsonData["result"]["geometry"]["location"]["lng"]
     };
-    // print(
-    //     "___________________________im here______________________________");
-    // print(location['lat'].toString());
+
     _destination = LatLng(jsonData["result"]["geometry"]["location"]["lat"],
         jsonData["result"]["geometry"]["location"]["lng"]);
     setState(() {
-      // markers.add(
-      //   Marker(
-      //     point: LatLng(location['lat']!, location['lng']!),
-      //     builder: (context) => const Icon(
-      //       Icons.add_location_alt,
-      //       color: Colors.green,
-      //       size: 40.0,
-      //     ),
-      //   ),
-      // );
-
       userDestination = Marker(
         point: LatLng(location['lat']!, location['lng']!),
         builder: (context) => const Icon(
@@ -129,65 +121,14 @@ class _HomePageState extends State<HomePage> {
 
     // return location;
   }
+  //! End: Getting the coordinate of destination : OutBuild
 
-  @override
-  Widget build(BuildContext context) {
-    // //!Start : Fill Transportation Values
-    // //fill bus transportation with l102 - thier
-    // StaticData.busTransportations = StaticData.busStations
-    //     .map((busStation) =>
-    //         BusTransportation(StaticData.busList['L102']!, busStation))
-    //     .toList();
-    // // StaticData.busList['L102']?.busTransportations =
-    // //     StaticData.busTransportations.contains(element);
+  //! UI variables
+  bool isBackButtonVisible = false;
+  bool isSearchBarVisible = true;
 
-    // StaticData.busTransportations.clear();
-    // print(StaticData.busTransportations.length);
-    // StaticData.busTransportations.forEach(
-    //   (busTransportation) {
-    //     // if (busTransportation.bus == StaticData.busList['L102']) {
-    //     // StaticData.busList['L102']?.busTransportations.add(busTransportation);
-    //     print(StaticData.busTransportations);
-    //     // }
-    //   },
-    // );
-    // print('________________ Bus Transportaion __________________');
-    // print(StaticData.busTransportations.length);
-    // print(
-    //     '________________ Bus Transportaion FROM The Bus Class __________________');
-    // StaticData.busList['L102']?.busTransportations.forEach(
-    //   (element) {
-    //     print(element.busStation.name);
-    //   },
-    // );
-    // StaticData.busList['L102']?.busTransportations = [];
-    StaticData.busTransportations = [
-      BusTransportation(
-          StaticData.busList['L102']!, StaticData.busStationsList['Takadoum']!),
-      BusTransportation(
-          StaticData.busList['L102']!, StaticData.busStationsList['Minipark']!),
-      BusTransportation(StaticData.busList['L102']!,
-          StaticData.busStationsList['Youssofia']!),
-      BusTransportation(StaticData.busList['L102']!,
-          BusStation("helper", LatLng(33.99722985505664, -6.815488358624003))),
-      BusTransportation(
-          StaticData.busList['L102']!, StaticData.busStationsList['Medina']!),
-      BusTransportation(
-          StaticData.busList['L102']!, StaticData.busStationsList['Ocean']!),
-    ];
-    // print("______ Bus Transportation ________");
-    // StaticData.busTransportations.forEach((element) {
-    //   if (element.bus == StaticData.busList['L102']) {
-    //     print(element.busStation.name);
-    //   }
-    // });
-    StaticData.busList['L102']?.busTransportations =
-        StaticData.busTransportations;
-    // StaticData.busList['L102']?.busTransportations.forEach((busTrans) {
-    //   print(busTrans.bus.name + " \|\| " + busTrans.busStation.name);
-    // });
-    // //!End
-    //Markers Taxi + Bus + Tram
+  void generateMapMarkers() {
+    // Taxi Markers
     List<Marker> taxiMarkers = StaticData.taxiStations
         .map(
           (taxiStation) => Marker(
@@ -198,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   onTap: () {
                     print(r"$$$$$$$$$$$$$$$$$$$$$$$$$");
-                    Fluttertoast.showToast(msg: taxiStation.name);
+                    // Fluttertoast.showToast(msg: taxiStation.name);
                     showModalBottomSheet<void>(
                       context: context,
                       builder: (BuildContext context) {
@@ -206,14 +147,16 @@ class _HomePageState extends State<HomePage> {
                           transportData: taxiStation.taxiss
                               .map(
                                 (taxi) => TransportData(
-                                  taxi.name,
-                                  taxi.duration,
-                                  taxi.price,
-                                  FenGhadiIcons.taxi,
-                                  fgYellow,
+                                  name: taxi.name,
+                                  duration: taxi.duration,
+                                  price: taxi.price,
+                                  icon: FenGhadiIcons.taxi,
+                                  color: fgYellow,
                                 ),
                               )
                               .toList(),
+                          isTaxi: true,
+                          stationName: taxiStation.name,
                         );
                       },
                     );
@@ -227,13 +170,14 @@ class _HomePageState extends State<HomePage> {
           ),
         )
         .toList();
+    // Bus Markers
     List<Marker> busMarkers = StaticData.busStations
         .map(
           (busStation) => Marker(
             point: busStation.location,
             builder: (ctx) => InkResponse(
               onTap: () {
-                Fluttertoast.showToast(msg: busStation.name);
+                // Fluttertoast.showToast(msg: busStation.name);
                 showModalBottomSheet<void>(
                   context: context,
                   builder: (BuildContext context) {
@@ -241,14 +185,33 @@ class _HomePageState extends State<HomePage> {
                       transportData: busStation.busList
                           .map(
                             (bus) => TransportData(
-                              bus.name,
-                              bus.duration,
-                              bus.price,
-                              FenGhadiIcons.bus,
-                              fgBlue,
+                              name: bus.name,
+                              duration: bus.duration,
+                              price: bus.price,
+                              icon: FenGhadiIcons.bus,
+                              color: fgBlue,
+                              bus: bus,
                             ),
                           )
                           .toList(),
+                      isBus: true,
+                      stationName: busStation.name,
+                      sendBusStations: (List<BusStation> gettedBusStations) {
+                        setState(() {
+                          passedRoutePoints = gettedBusStations
+                              .map((station) => station.location)
+                              .toList();
+                          isBackButtonVisible = true;
+                          Navigator.pop(context);
+                          isSearchBarVisible = false;
+                          generateBusStationMarkers(gettedBusStations);
+                        });
+                      },
+                      // childPressed: () {
+                      //   passedRoutePoints = StaticData.busList['L3']!.stations
+                      //       .map((station) => station.location)
+                      //       .toList();
+                      // },
                     );
                   },
                 );
@@ -262,13 +225,14 @@ class _HomePageState extends State<HomePage> {
           ),
         )
         .toList();
+    // Tram Markers
     List<Marker> tramMarkers = StaticData.tramStations
         .map(
           (tramStation) => Marker(
             point: tramStation.location,
             builder: (ctx) => InkResponse(
               onTap: () {
-                Fluttertoast.showToast(msg: tramStation.name);
+                // Fluttertoast.showToast(msg: tramStation.name);
                 showModalBottomSheet<void>(
                   context: context,
                   builder: (BuildContext context) {
@@ -276,14 +240,16 @@ class _HomePageState extends State<HomePage> {
                       transportData: tramStation.trams
                           .map(
                             (tram) => TransportData(
-                              tram.name,
-                              tram.duration,
-                              tram.price,
-                              FenGhadiIcons.tram,
-                              fgRed,
+                              name: tram.name,
+                              duration: tram.duration,
+                              price: tram.price,
+                              icon: FenGhadiIcons.tram,
+                              color: fgRed,
                             ),
                           )
                           .toList(),
+                      isTram: true,
+                      stationName: tramStation.name,
                     );
                   },
                 );
@@ -304,7 +270,7 @@ class _HomePageState extends State<HomePage> {
     if (widget.isTaxiChecked) markers += taxiMarkers;
     if (widget.isTramChecked) markers += tramMarkers;
 
-    //show position in map
+    //Current User Marker
     if (_locationData != null) {
       userLocation = Marker(
         point:
@@ -318,47 +284,154 @@ class _HomePageState extends State<HomePage> {
       markers.add(userLocation!);
     }
 
+    //User Destination Marker
     if (userDestination != null) {
       markers.add(userDestination!);
     }
+  }
 
-    //show destination in map
+  void generateBusStationMarkers(List<BusStation> busStations) {
+    setState(() {
+      markers = busStations
+          .map(
+            (busStation) => Marker(
+              point: busStation.location,
+              builder: (ctx) => InkResponse(
+                onTap: () {
+                  // Fluttertoast.showToast(msg: busStation.name);
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return TransportDataSheet(
+                        transportData: busStation.busList
+                            .map(
+                              (bus) => TransportData(
+                                name: bus.name,
+                                duration: bus.duration,
+                                price: bus.price,
+                                icon: FenGhadiIcons.bus,
+                                color: fgBlue,
+                                bus: bus,
+                              ),
+                            )
+                            .toList(),
+                        isBus: true,
+                        stationName: busStation.name,
+                        sendBusStations: (List<BusStation> gettedBusStations) {
+                          setState(() {
+                            passedRoutePoints = gettedBusStations
+                                .map((station) => station.location)
+                                .toList();
+                            isBackButtonVisible = true;
+                            Navigator.pop(context);
+                            isSearchBarVisible = false;
+                            generateBusStationMarkers(gettedBusStations);
+                          });
+                        },
+                        // childPressed: () {
+                        //   passedRoutePoints = StaticData.busList['L3']!.stations
+                        //       .map((station) => station.location)
+                        //       .toList();
+                        // },
+                      );
+                    },
+                  );
+                },
+                child: Icon(
+                  FenGhadiIcons.marker_bus,
+                  size: 50.0,
+                  color: fgBlue,
+                ),
+              ),
+            ),
+          )
+          .toList();
+    });
+  }
 
+  void generateTramMarkers() {
+    markers = [];
+  }
+
+  void generateTaxiMarkers() {
+    markers = [];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("_______________Before it send to the map_________________");
+    print(passedRoutePoints);
+    // //!Start : prepare Transportation Data : InBuild
+    //? Assign Statios to each bus
+    for (var key in StaticData.busList.keys) {
+      StaticData.busList[key]?.stations = StaticData.busTransportations
+          .where((busTransportation) =>
+              busTransportation.bus == StaticData.busList[key])
+          .map((busTransportation) => busTransportation.busStation)
+          .toList();
+    }
+
+    //? Assign busList For each Station
+    for (var key in StaticData.busStationsList.keys) {
+      StaticData.busStationsList[key]?.busList = StaticData.busTransportations
+          .where((busTransportation) =>
+              busTransportation.busStation == StaticData.busStationsList[key])
+          .map((busTransportation) => busTransportation.bus)
+          .toList();
+    }
+    // //!End : prepare Transportation Data : InBuild
+    //! Start: prepare Map Markers : InBuild
+    //! End: Prepare Map Markers : InBuild
+    //! Start: Scaffold Widget : InBuild
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
         children: [
-          // SearchBar(
-          //   onSearch: (searchedCoordinate) {},
-          // ),
           MainMap(
             gettedMarkers: markers,
             // start: _start,
             // end: _end,
             listPoints: passedRoutePoints,
           ),
-          Positioned(
-            top: 20,
-            left: 20,
-            right: 20,
-            child: GoogleAutocomplete(getPlaceId: (str) async {
-              await getLocationFromPlaceId(str, apiKey);
+          Visibility(
+            visible: isSearchBarVisible,
+            child: Positioned(
+              top: 20,
+              left: 20,
+              right: 20,
+              child: GoogleAutocomplete(getPlaceId: (str) async {
+                await getLocationFromPlaceId(str, apiKey);
 
-              setState(() {
-                // fetchPlaceDetails(str);
-
-                print(_locationData);
-                print(_destination);
-                _start = LatLng(_locationData?.latitude ?? 0,
-                    _locationData?.longitude ?? 0);
-                _end = LatLng(_destination.latitude, _destination.longitude);
-                print("______________start_____________");
-                print(_start);
-                print("______________end_____________");
-                print(_end);
-              });
-            }),
+                setState(() {
+                  _start = LatLng(_locationData?.latitude ?? 0,
+                      _locationData?.longitude ?? 0);
+                  _end = LatLng(_destination.latitude, _destination.longitude);
+                });
+              }),
+            ),
           ),
+          Visibility(
+            visible: isBackButtonVisible,
+            child: Positioned(
+                top: 20,
+                left: 20,
+                height: 50,
+                width: 50,
+                child: ElevatedButton(
+                  child: const Icon(
+                    FenGhadiIcons.arrow_left,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      passedRoutePoints = [];
+                      isBackButtonVisible = false;
+                      isSearchBarVisible = true;
+                      generateMapMarkers();
+                    });
+                  },
+                )),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -377,12 +450,6 @@ class _HomePageState extends State<HomePage> {
               );
               markers.add(userLocation!);
             }
-            passedRoutePoints = StaticData.busList['L102']!.busTransportations
-                .map((busTransportation) =>
-                    busTransportation.busStation.location)
-                .toList();
-            print("__________Passed Route Points __________");
-            print(passedRoutePoints);
           });
         },
         backgroundColor: primaryColor,
@@ -392,5 +459,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+    //! End: Scaffold Widget : InBuild
   }
 }

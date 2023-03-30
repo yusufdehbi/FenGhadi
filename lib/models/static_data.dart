@@ -5,6 +5,7 @@ import 'package:fen_ghadi/models/taxi_station.dart';
 import 'package:fen_ghadi/models/taxi_transportation.dart';
 import 'package:fen_ghadi/models/tram.dart';
 import 'package:fen_ghadi/models/tram_stations.dart';
+import 'package:fen_ghadi/models/tram_transportation.dart';
 import 'package:latlong2/latlong.dart';
 import 'bus.dart';
 
@@ -67,16 +68,18 @@ class StaticData {
       'Ocean',
       LatLng(34.0226221, -6.8445908),
     ),
-    // BusStation(
-    //   'arroudani ',
-    //   LatLng(33.9803803, -6.8238654),
-    //   buss,
-    // ),
-    // BusStation(
-    //   'mhedra ',
-    //   LatLng(34.0324264, -6.7909646),
-    //   buss,
-    // ),
+    BusStation(
+      'Temara ',
+      LatLng(33.9362713, -6.9057512),
+    ),
+    BusStation(
+      'Est ',
+      LatLng(34.0515397, -6.8138573),
+    ),
+    BusStation(
+      'Bouknadel',
+      LatLng(34.12701860294961, -6.735920939815566),
+    ),
   ];
   static List<TramStation> tramStations = [
     TramStation(
@@ -90,7 +93,7 @@ class StaticData {
       trams,
     ),
     TramStation(
-      'GARE RABAT VILLE ibn',
+      'GARE RABAT VILLE',
       LatLng(34.0138736, -6.8365325),
       trams,
     ),
@@ -122,6 +125,7 @@ class StaticData {
     Bus('L104', const Duration(minutes: 40)),
     Bus('L8', const Duration(minutes: 90)),
     Bus('L102', const Duration(minutes: 10)),
+    Bus('L3', const Duration(minutes: 90)),
   ];
   static List<Taxi> taxiss = [
     Taxi('kamra', 5.0, const Duration(minutes: 30)),
@@ -143,6 +147,7 @@ class StaticData {
     'L10': buss[1],
     'L37': buss[2],
     'L8': buss[4],
+    'L3': buss[6],
   };
   static Map<String, BusStation> busStationsList = {
     'Minipark': busStations[1],
@@ -150,8 +155,43 @@ class StaticData {
     'Youssofia': busStations[2],
     'Medina': busStations[3],
     'Ocean': busStations[4],
+    'Temara': busStations[5],
+    'Est': busStations[6],
+    'Bouknadel': busStations[7],
+  };
+  static Map<String, Tram> tramList = {
+    'L1': trams[0],
+    'L2': trams[1],
+  };
+  static Map<String, TramStation> tramStationList = {
+    'United Nations station': tramStations[0],
+    'Bibliothéque Natioanle': tramStations[1],
+    'GARE RABAT VILLE': tramStations[2],
+    'Mosque Ashohada': tramStations[3],
+    'Diar-V': tramStations[4],
+    'Bouzid 1': tramStations[5],
+    'Mazza-v': tramStations[6]
   };
 
   static List<TaxiTransporation> taxiTransportations = [];
-  static List<BusTransportation> busTransportations = [];
+  static List<BusTransportation> busTransportations = [
+    //Line 102
+    BusTransportation(busList['L102']!, busStationsList['Takadoum']!),
+    BusTransportation(busList['L102']!, busStationsList['Minipark']!),
+    BusTransportation(busList['L102']!, busStationsList['Youssofia']!),
+    BusTransportation(busList['L102']!, busStationsList['Medina']!),
+    BusTransportation(busList['L102']!, busStationsList['Ocean']!),
+    //Line 37
+    BusTransportation(busList['L37']!, busStationsList['Minipark']!),
+    BusTransportation(busList['L37']!, busStationsList['Takadoum']!),
+    BusTransportation(busList['L37']!, busStationsList['Temara']!),
+    //Line 3
+    BusTransportation(busList['L3']!, busStationsList['Medina']!),
+    BusTransportation(busList['L3']!, busStationsList['Est']!),
+    BusTransportation(busList['L3']!, busStationsList['Bouknadel']!),
+  ];
+  static List<TramTransportation> tramTransportation = [
+    //line 1
+    TramTransportation(trams[0], tramStations['Takadoum']),
+  ];
 }
