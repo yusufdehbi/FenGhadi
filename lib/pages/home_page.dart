@@ -6,7 +6,10 @@ import 'package:fen_ghadi/models/bus.dart';
 import 'package:fen_ghadi/models/bus_station.dart';
 import 'package:fen_ghadi/models/bus_transportation.dart';
 import 'package:fen_ghadi/models/static_data.dart';
+import 'package:fen_ghadi/models/taxi_station.dart';
 import 'package:fen_ghadi/models/taxi_transportation.dart';
+import 'package:fen_ghadi/models/tram_stations.dart';
+import 'package:fen_ghadi/models/tram_transportation.dart';
 import 'package:fen_ghadi/models/transport_data.dart';
 import 'package:flutter/material.dart';
 import 'package:fen_ghadi/components/main_map.dart';
@@ -133,30 +136,40 @@ class _HomePageState extends State<HomePage> {
         .map(
           (taxiStation) => Marker(
             point: taxiStation.location,
-            builder: ((context) => GestureDetector(
-                  onDoubleTap: () {
-                    Fluttertoast.showToast(msg: 'msg');
-                  },
+            builder: ((ctx) => InkResponse(
                   onTap: () {
-                    print(r"$$$$$$$$$$$$$$$$$$$$$$$$$");
                     // Fluttertoast.showToast(msg: taxiStation.name);
+                    print("----------------Taxi--------------");
+                    print(StaticData.taxiStations);
                     showModalBottomSheet<void>(
                       context: context,
                       builder: (BuildContext context) {
                         return TransportDataSheet(
-                          transportData: taxiStation.taxiss
+                          transportData: taxiStation.taxiList
                               .map(
                                 (taxi) => TransportData(
-                                  name: taxi.name,
-                                  duration: taxi.duration,
-                                  price: taxi.price,
-                                  icon: FenGhadiIcons.taxi,
-                                  color: fgYellow,
-                                ),
+                                    name: taxi.name,
+                                    duration: taxi.duration,
+                                    price: taxi.price,
+                                    icon: FenGhadiIcons.taxi,
+                                    color: fgYellow,
+                                    taxi: taxi),
                               )
                               .toList(),
                           isTaxi: true,
                           stationName: taxiStation.name,
+                          sendTaxiStations:
+                              (List<TaxiStation> gettedTaxiStations) {
+                            setState(() {
+                              passedRoutePoints = gettedTaxiStations
+                                  .map((station) => station.location)
+                                  .toList();
+                              isBackButtonVisible = true;
+                              Navigator.pop(context);
+                              isSearchBarVisible = false;
+                              generateTaxiMarkers(gettedTaxiStations);
+                            });
+                          },
                         );
                       },
                     );
@@ -232,12 +245,12 @@ class _HomePageState extends State<HomePage> {
             point: tramStation.location,
             builder: (ctx) => InkResponse(
               onTap: () {
-                // Fluttertoast.showToast(msg: tramStation.name);
+                Fluttertoast.showToast(msg: tramStation.name);
                 showModalBottomSheet<void>(
                   context: context,
                   builder: (BuildContext context) {
                     return TransportDataSheet(
-                      transportData: tramStation.trams
+                      transportData: tramStation.tramList
                           .map(
                             (tram) => TransportData(
                               name: tram.name,
@@ -245,11 +258,25 @@ class _HomePageState extends State<HomePage> {
                               price: tram.price,
                               icon: FenGhadiIcons.tram,
                               color: fgRed,
+                              tram: tram,
                             ),
                           )
                           .toList(),
                       isTram: true,
                       stationName: tramStation.name,
+                      sendTramStations: (List<TramStation> gettedTramStations) {
+                        setState(() {
+                          passedRoutePoints = gettedTramStations
+                              .map((station) => station.location)
+                              .toList();
+                          print(r"OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                          print(gettedTramStations);
+                          isBackButtonVisible = true;
+                          Navigator.pop(context);
+                          isSearchBarVisible = false;
+                          generateTramMarkers(gettedTramStations);
+                        });
+                      },
                     );
                   },
                 );
@@ -349,12 +376,122 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void generateTramMarkers() {
-    markers = [];
+  void generateTramMarkers(List<TramStation> tramStations) {
+    setState(() {
+      markers = tramStations
+          .map(
+            (tramStation) => Marker(
+              point: tramStation.location,
+              builder: (ctx) => InkResponse(
+                onTap: () {
+                  // Fluttertoast.showToast(msg: busStation.name);
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return TransportDataSheet(
+                        transportData: tramStation.tramList
+                            .map(
+                              (tram) => TransportData(
+                                name: tram.name,
+                                duration: tram.duration,
+                                price: tram.price,
+                                icon: FenGhadiIcons.bus,
+                                color: fgBlue,
+                                tram: tram,
+                              ),
+                            )
+                            .toList(),
+                        isTram: true,
+                        stationName: tramStation.name,
+                        sendTramStations:
+                            (List<TramStation> gettedTramStations) {
+                          setState(() {
+                            passedRoutePoints = gettedTramStations
+                                .map((station) => station.location)
+                                .toList();
+                            isBackButtonVisible = true;
+                            Navigator.pop(context);
+                            isSearchBarVisible = false;
+                            generateTramMarkers(gettedTramStations);
+                          });
+                        },
+                        // childPressed: () {
+                        //   passedRoutePoints = StaticData.busList['L3']!.stations
+                        //       .map((station) => station.location)
+                        //       .toList();
+                        // },
+                      );
+                    },
+                  );
+                },
+                child: Icon(
+                  FenGhadiIcons.marker_tram,
+                  size: 50.0,
+                  color: fgRed,
+                ),
+              ),
+            ),
+          )
+          .toList();
+    });
   }
 
-  void generateTaxiMarkers() {
-    markers = [];
+  void generateTaxiMarkers(List<TaxiStation> taxiStations) {
+    setState(() {
+      markers = taxiStations
+          .map(
+            (taxiStation) => Marker(
+              point: taxiStation.location,
+              builder: ((context) => GestureDetector(
+                    onDoubleTap: () {
+                      Fluttertoast.showToast(msg: 'msg');
+                    },
+                    onTap: () {
+                      // Fluttertoast.showToast(msg: taxiStation.name);
+                      showModalBottomSheet<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return TransportDataSheet(
+                            transportData: taxiStation.taxiList
+                                .map(
+                                  (taxi) => TransportData(
+                                    name: taxi.name,
+                                    duration: taxi.duration,
+                                    price: taxi.price,
+                                    icon: FenGhadiIcons.taxi,
+                                    color: fgYellow,
+                                    taxi: taxi,
+                                  ),
+                                )
+                                .toList(),
+                            isTaxi: true,
+                            stationName: taxiStation.name,
+                            sendTaxiStations:
+                                (List<TaxiStation> gettedTaxiStations) {
+                              setState(() {
+                                passedRoutePoints = gettedTaxiStations
+                                    .map((station) => station.location)
+                                    .toList();
+                                isBackButtonVisible = true;
+                                Navigator.pop(context);
+                                isSearchBarVisible = false;
+                                generateTaxiMarkers(gettedTaxiStations);
+                              });
+                            },
+                          );
+                        },
+                      );
+                    },
+                    child: Icon(
+                      FenGhadiIcons.marker_taxi,
+                      size: 50.0,
+                      color: fgOrange,
+                    ),
+                  )),
+            ),
+          )
+          .toList();
+    });
   }
 
   @override
@@ -377,6 +514,40 @@ class _HomePageState extends State<HomePage> {
           .where((busTransportation) =>
               busTransportation.busStation == StaticData.busStationsList[key])
           .map((busTransportation) => busTransportation.bus)
+          .toList();
+    }
+
+    //? Assign Stations to each Tram
+    for (var key in StaticData.tramList.keys) {
+      StaticData.tramList[key]?.stations = StaticData.tramTransportation
+          .where((tramTransportation) =>
+              tramTransportation.tram == StaticData.tramList[key])
+          .map((tramTransportation) => tramTransportation.tramStation)
+          .toList();
+    }
+    //? Assign busList For each Station
+    for (var key in StaticData.tramStationList.keys) {
+      StaticData.tramStationList[key]?.tramList = StaticData.tramTransportation
+          .where((tramTransportation) =>
+              tramTransportation.tramStation == StaticData.tramStationList[key])
+          .map((tramTransportation) => tramTransportation.tram)
+          .toList();
+    }
+
+    //? Assign Stations to each Taxi
+    for (var key in StaticData.taxiList.keys) {
+      StaticData.taxiList[key]?.stations = StaticData.taxiTransportations
+          .where((taxiTransportation) =>
+              taxiTransportation.taxi == StaticData.taxiList[key])
+          .map((TaxiTransporation) => TaxiTransporation.taxiStation)
+          .toList();
+    }
+    //? Assign taxiList For each Station
+    for (var key in StaticData.taxiStationList.keys) {
+      StaticData.taxiStationList[key]?.taxiList = StaticData.taxiTransportations
+          .where((taxiTransportation) =>
+              taxiTransportation.taxiStation == StaticData.taxiStationList[key])
+          .map((taxiTransportation) => taxiTransportation.taxi)
           .toList();
     }
     // //!End : prepare Transportation Data : InBuild

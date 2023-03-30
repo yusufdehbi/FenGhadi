@@ -4,12 +4,10 @@ import 'package:latlong2/latlong.dart';
 class TaxiStation {
   final String name;
   final LatLng location;
-  final List<TaxiStation> taxiStations = [];
-  final List<Taxi> taxiss;
+  List<Taxi> taxiList = [];
 
   TaxiStation({
     required this.name,
     required this.location,
-    required this.taxiss,
   });
 }

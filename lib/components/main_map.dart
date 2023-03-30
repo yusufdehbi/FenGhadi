@@ -117,9 +117,8 @@ class _MainMapState extends State<MainMap> {
           center: LatLng(33.9715904, -6.8498129),
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           onLongPress: (tapPosition, point) {
-            print(point.latitude.toString() +
-                " _____ " +
-                point.longitude.toString());
+            print(
+                point.latitude.toString() + ", " + point.longitude.toString());
           },
         ),
         children: [

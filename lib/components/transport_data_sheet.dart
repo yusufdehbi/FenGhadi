@@ -33,13 +33,19 @@ class TransportDataSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color? bgColor;
+    if (isBus != null && isBus == true) {
+      bgColor = fgBlue;
+    } else if (isTram != null && isTram == true) {
+      bgColor = fgRed;
+    } else {
+      bgColor = fgYellow;
+    }
+    print('________________Taxi_______________');
+    print(transportData);
     return Container(
       height: 400,
-      color: isBus!
-          ? fgBlue
-          : isTram!
-              ? fgRed
-              : fgYellow,
+      color: bgColor,
       child: Column(children: [
         Expanded(
             flex: 2,
@@ -81,14 +87,14 @@ class TransportDataSheet extends StatelessWidget {
                           price: data.price,
                           duration: data.duration,
                           pressed: () {
-                            if (isBus!) {
+                            if (isBus != null && isBus == true) {
                               sendBusStations!(data.bus!.stations);
                             }
-                            if (isTram!) {
-                              // TODO: send current taxi stations
+                            if (isTram != null && isTram == true) {
+                              sendTramStations!(data.tram?.stations ?? []);
                             }
-                            if (isTaxi!) {
-                              // TODO: send current tram stations
+                            if (isTaxi != null && isTaxi == true) {
+                              sendTaxiStations!(data.taxi!.stations);
                             }
                           },
                         ))

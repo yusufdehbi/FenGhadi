@@ -12,39 +12,28 @@ import 'bus.dart';
 class StaticData {
   static List<TaxiStation> taxiStations = [
     TaxiStation(
-      name: 'mini park',
-      location: LatLng(34.01325, -6.83255),
-      taxiss: taxiss,
+      name: 'Minipark',
+      location: LatLng(33.99319119958285, -6.818499300327625),
     ),
     TaxiStation(
-      name: 'Hoummane Al Fatouaki',
-      location: LatLng(34.159797452248405, -6.399372758969286),
-      taxiss: taxiss,
+      name: 'Hay nahda',
+      location: LatLng(33.9790910326907, -6.813987787675005),
     ),
     TaxiStation(
-      name: 'Al Haouz',
-      location: LatLng(34.159797452248405, -6.399372758969286),
-      taxiss: taxiss,
+      name: 'Agdal',
+      location: LatLng(33.995553944425176, -6.8513333514172485),
     ),
     TaxiStation(
-      name: 'Abou Bakr Saddik',
-      location: LatLng(34.00409861562887, -6.618133412371321),
-      taxiss: taxiss,
+      name: 'Manal',
+      location: LatLng(33.99039423070884, -6.877291974325247),
     ),
     TaxiStation(
-      name: 'Moulay Ali Cherif',
-      location: LatLng(34.24642957710635, -6.397379671728518),
-      taxiss: taxiss,
+      name: 'Sale el jadida',
+      location: LatLng(33.98729591882331, -6.729246762549353),
     ),
     TaxiStation(
-      name: 'aéroport ',
-      location: LatLng(34.24642957710635, -6.397379671728518),
-      taxiss: taxiss,
-    ),
-    TaxiStation(
-      name: 'Airfane ',
-      location: LatLng(33.979455, -6.8745913),
-      taxiss: taxiss,
+      name: 'Karya',
+      location: LatLng(34.03108463843669, -6.756651470804838),
     ),
   ];
   static List<BusStation> busStations = [
@@ -85,37 +74,38 @@ class StaticData {
     TramStation(
       'United Nations station',
       LatLng(33.9972507, -6.8424226),
-      trams,
     ),
     TramStation(
       'Bibliothéque Natioanle',
       LatLng(34.0081551, -6.8408133),
-      trams,
     ),
     TramStation(
       'GARE RABAT VILLE',
       LatLng(34.0138736, -6.8365325),
-      trams,
     ),
     TramStation(
       'Mosque Ashohada',
       LatLng(34.0257096, -6.8411781),
-      trams,
     ),
     TramStation(
       'Diar-V',
       LatLng(34.0387004, -6.818563),
-      trams,
     ),
     TramStation(
       'Bouzid 1',
       LatLng(34.052404, -6.8117959),
-      trams,
     ),
     TramStation(
       'Mazza-v',
       LatLng(34.0685301, -6.7609849),
-      trams,
+    ),
+    TramStation(
+      'Tabriquet',
+      LatLng(34.03493508501021, -6.806467880579064),
+    ),
+    TramStation(
+      'Ibn al haytem',
+      LatLng(34.05364663275742, -6.780499446832965),
     ),
   ];
   static List<Bus> buss = [
@@ -128,12 +118,11 @@ class StaticData {
     Bus('L3', const Duration(minutes: 90)),
   ];
   static List<Taxi> taxiss = [
-    Taxi('kamra', 5.0, const Duration(minutes: 30)),
-    Taxi('Sale El jadida', 10.0, const Duration(minutes: 50)),
-    Taxi('temara', 10.0, const Duration(minutes: 60)),
-    Taxi('manal', 5.0, const Duration(minutes: 40)),
-    Taxi('Ain Aouda', 13.0, const Duration(minutes: 90)),
-    Taxi('Takadoum', 5.0, const Duration(minutes: 10)),
+    Taxi('manal - minipark', 5.0, const Duration(minutes: 35)),
+    Taxi('sale el jadida - minipark', 15.0, const Duration(minutes: 50)),
+    Taxi('hay nahda - agdal', 5.0, const Duration(minutes: 20)),
+    Taxi('agdal - karya', 13.0, const Duration(minutes: 40)),
+    Taxi('manal - hay nahda', 5.0, const Duration(minutes: 45)),
   ];
   static List<Tram> trams = [
     Tram('L1', const Duration(minutes: 30)),
@@ -170,10 +159,71 @@ class StaticData {
     'Mosque Ashohada': tramStations[3],
     'Diar-V': tramStations[4],
     'Bouzid 1': tramStations[5],
-    'Mazza-v': tramStations[6]
+    'Mazza-v': tramStations[6],
+    'Tabriquet': tramStations[7],
+    'Ibn al haytem': tramStations[8]
+  };
+  static Map<String, Taxi> taxiList = {
+    taxiss[0].name: taxiss[0],
+    taxiss[1].name: taxiss[0],
+    taxiss[2].name: taxiss[0],
+    taxiss[3].name: taxiss[0],
+    taxiss[4].name: taxiss[0],
+  };
+  static Map<String, TaxiStation> taxiStationList = {
+    taxiStations[0].name: taxiStations[0],
+    taxiStations[1].name: taxiStations[1],
+    taxiStations[2].name: taxiStations[2],
+    taxiStations[3].name: taxiStations[3],
+    taxiStations[4].name: taxiStations[4],
+    taxiStations[5].name: taxiStations[5],
+    // taxiStations[6].name: taxiStations[6],
+    // taxiStations[7].name: taxiStations[7],
+    // taxiStations[8].name: taxiStations[8],
   };
 
-  static List<TaxiTransporation> taxiTransportations = [];
+  static List<TaxiTransporation> taxiTransportations = [
+    TaxiTransporation(
+      taxiList['manal - minipark']!,
+      taxiStationList['Minipark']!,
+    ),
+    TaxiTransporation(
+      taxiList['manal - minipark']!,
+      taxiStationList['Manal']!,
+    ),
+    TaxiTransporation(
+      taxiList['sale el jadida - minipark']!,
+      taxiStationList['Sale el jadida']!,
+    ),
+    TaxiTransporation(
+      taxiList['sale el jadida - minipark']!,
+      taxiStationList['Minipark']!,
+    ),
+    TaxiTransporation(
+      taxiList['hay nahda - agdal']!,
+      taxiStationList['Hay nahda']!,
+    ),
+    TaxiTransporation(
+      taxiList['hay nahda - agdal']!,
+      taxiStationList['Agdal']!,
+    ),
+    TaxiTransporation(
+      taxiList['agdal - karya']!,
+      taxiStationList['Agdal']!,
+    ),
+    TaxiTransporation(
+      taxiList['agdal - karya']!,
+      taxiStationList['Karya']!,
+    ),
+    TaxiTransporation(
+      taxiList['manal - hay nahda']!,
+      taxiStationList['Manal']!,
+    ),
+    TaxiTransporation(
+      taxiList['manal - hay nahda']!,
+      taxiStationList['Hay nahda']!,
+    ),
+  ];
   static List<BusTransportation> busTransportations = [
     //Line 102
     BusTransportation(busList['L102']!, busStationsList['Takadoum']!),
@@ -192,6 +242,24 @@ class StaticData {
   ];
   static List<TramTransportation> tramTransportation = [
     //line 1
-    TramTransportation(trams[0], tramStations['Takadoum']),
+    TramTransportation(
+        tramList['L1']!, tramStationList['United Nations station']!),
+    TramTransportation(
+        tramList['L1']!, tramStationList['Bibliothéque Natioanle']!),
+    TramTransportation(tramList['L1']!, tramStationList['GARE RABAT VILLE']!),
+    TramTransportation(tramList['L1']!, tramStationList['Mosque Ashohada']!),
+    TramTransportation(tramList['L1']!, tramStationList['Diar-V']!),
+    TramTransportation(tramList['L1']!, tramStationList['Bouzid 1']!),
+    TramTransportation(tramList['L1']!, tramStationList['Mazza-v']!),
+    //line 2
+    TramTransportation(
+        tramList['L2']!, tramStationList['United Nations station']!),
+    TramTransportation(
+        tramList['L2']!, tramStationList['Bibliothéque Natioanle']!),
+    TramTransportation(tramList['L2']!, tramStationList['GARE RABAT VILLE']!),
+    TramTransportation(tramList['L2']!, tramStationList['Mosque Ashohada']!),
+    TramTransportation(tramList['L2']!, tramStationList['Diar-V']!),
+    TramTransportation(tramList['L2']!, tramStationList['Tabriquet']!),
+    TramTransportation(tramList['L2']!, tramStationList['Ibn al haytem']!),
   ];
 }
